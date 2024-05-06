@@ -2,10 +2,13 @@ package com.patriciasantos.desafio.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.patriciasantos.desafio.models.enums.PerfilEnum;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,6 +43,9 @@ public class Usuario {
     @NotEmpty
     private Boolean ativo = true;
 
+    @JsonProperty( access = Access.WRITE_ONLY)
+    @Column(name = "perfil", nullable = false) 
+    private Integer perfil;
     
 
     public Usuario() {
@@ -74,7 +80,31 @@ public class Usuario {
 
     public void setSenha(final String senha) {
         this.senha = senha;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Integer getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Integer perfil) {
+        this.perfil = perfil;
     }   
+
+    public PerfilEnum getPerfilEnum() {
+        return PerfilEnum.toEnum(this.perfil);
+    }
+
+    public void setPerfil(final PerfilEnum perfilEnum) {
+        this.perfil = perfilEnum.getCodigo();
+    }
     
 }
 
