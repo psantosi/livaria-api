@@ -7,7 +7,7 @@ import com.patriciasantos.desafio.models.Voto;
 public class VotoTO implements Serializable {
 
     private Integer nota;
-    private String usuario;
+    private Long idFilme;
 
 
     public VotoTO() {
@@ -16,7 +16,7 @@ public class VotoTO implements Serializable {
 
     public VotoTO(final Voto voto) {
         this.nota = voto.getNota();
-        this.usuario = voto.getUsuario().getUsername();
+        this.idFilme = voto.getFilme().getId();
     }
 
 
@@ -28,13 +28,15 @@ public class VotoTO implements Serializable {
         this.nota = nota;
     }
 
-    public String getUsuario() {
-        return this.usuario;
+
+    public Long getIdFilme() {
+        return idFilme;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
+
+    public void setIdFilme(Long idFilme) {
+        this.idFilme = idFilme;
+    } 
 
 
 }

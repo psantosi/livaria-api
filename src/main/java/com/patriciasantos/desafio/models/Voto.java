@@ -78,6 +78,36 @@ public class Voto {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public static class VotoBuilder {
+
+        private Voto voto;
+
+        public VotoBuilder create() {
+            voto = new Voto();
+            return this;
+        }
+
+        public VotoBuilder comNota(final Integer nota) {
+            voto.setNota(nota);
+            return this;
+        }
+
+        public VotoBuilder comUsuario(final Usuario usuario) {
+            voto.setUsuario(usuario);
+            return this;
+        }
+
+        public VotoBuilder comFilme(final Filme filme) {
+            voto.setFilme(filme);
+            return this;
+        }
+
+        public Voto build() {
+            return voto;
+        }
+
+    }
     
 
 }

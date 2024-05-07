@@ -38,6 +38,11 @@ public class UsuarioService {
         return usuario;
     }
 
+    public Usuario obterUsuarioLogado() {
+        final UsuarioSpringSecurity usuarioSpringSecurity = this.usuarioAutenticado();
+        return this.obter(usuarioSpringSecurity.getId());
+    }
+
 
     @Transactional(rollbackOn = Exception.class)
     public Usuario criar(final UsuarioTO usuarioTO) {

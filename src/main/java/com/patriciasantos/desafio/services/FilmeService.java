@@ -2,7 +2,6 @@ package com.patriciasantos.desafio.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -32,9 +31,13 @@ public class FilmeService {
         return this.converterParaView(filmes);
     }
 
-    public FilmeView busca(final Long id) {
+    public FilmeView buscarView(final Long id) {
         final Filme filme = this.filmeRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException("Filme não encontrado."));
         return FilmeView.toView(filme);
+    }
+
+    public Filme buscar(final Long id) {
+        return this.filmeRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException("Filme não encontrado."));
     }
 
     private List<FilmeView> converterParaView(final List<Filme> filmes) {
