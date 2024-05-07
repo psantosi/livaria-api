@@ -6,9 +6,7 @@ import com.patriciasantos.desafio.models.enums.PerfilEnum;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -104,6 +102,36 @@ public class Usuario {
 
     public void setPerfil(final PerfilEnum perfilEnum) {
         this.perfil = perfilEnum.getCodigo();
+    }
+
+    public static class UsuarioBuilder {
+
+        private Usuario usuario;
+
+        public UsuarioBuilder create() {
+            usuario = new Usuario();
+            return this;
+        }
+
+        public UsuarioBuilder comUsername(final String username) {
+            usuario.setUsername(username);
+            return this;
+        }
+
+        public UsuarioBuilder comSenha(final String senha) {
+            usuario.setSenha(senha);
+            return this;
+        }
+
+        public UsuarioBuilder comPerfil(final Integer perfil) {
+            usuario.setPerfil(perfil);
+            return this;
+        }
+
+        public Usuario build() {
+            return usuario;
+        }
+
     }
     
 }

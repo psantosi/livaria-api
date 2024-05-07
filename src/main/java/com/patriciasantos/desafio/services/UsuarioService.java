@@ -2,12 +2,16 @@ package com.patriciasantos.desafio.services;
 
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.patriciasantos.desafio.models.Usuario;
 import com.patriciasantos.desafio.models.enums.PerfilEnum;
+import com.patriciasantos.desafio.models.to.UsuarioTo;
 import com.patriciasantos.desafio.repositories.UsuarioRepository;
+import com.patriciasantos.desafio.security.UsuarioSpringSecurity;
+import com.patriciasantos.desafio.services.exceptions.AuthorizationException;
 import com.patriciasantos.desafio.services.exceptions.ObjetoNaoEncontradoException;
 
 import jakarta.transaction.Transactional;
@@ -25,24 +29,63 @@ public class UsuarioService {
     }
 
     public Usuario obter(final Long id) {
-        final Optional<Usuario> usuario = this.usuarioRepository.findById(id);
-        return usuario.orElseThrow(() -> new ObjetoNaoEncontradoException("Usuário não encontrado."));
+        if (!this.isUsuarioAdmin() && !this.usuarioAutenticado().getId().equals(id)) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        final Usuario usuario = this.usuarioRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException("Usuário não encontrado."));
+        this.validarSeUsuarioEstaAtivo(usuario);
+        return usuario;
     }
 
 
     @Transactional(rollbackOn = Exception.class)
-    public void criar(final Usuario usuario) {
-        usuario.setId(null);
-        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuario.getSenha()));
-        usuario.setPerfil(PerfilEnum.USUARIO);
+    public Usuario criar(final UsuarioTo usuarioTo) {
+        if (!this.isUsuarioAdmin()) {
+            throw new AuthorizationException("Você não tem permissão para cadastrar um usuário.");
+        }
+        
+        final Usuario usuario = new Usuario.UsuarioBuilder().create()
+        .comUsername(usuarioTo.getUsername())
+        .comSenha(this.bCryptPasswordEncoder.encode(usuarioTo.getSenha()))
+        .comPerfil(usuarioTo.getPerfil())
+        .build();
+        
+        return this.usuarioRepository.save(usuario);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public void atualizar(final Long id, final UsuarioTo usuarioTo) {
+        final Usuario usuario = this.obter(id);
+        usuario.setUsername(usuarioTo.getUsername());
+        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuarioTo.getSenha()));
         this.usuarioRepository.save(usuario);
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public void atualizar(final Usuario usuario) {
-        final Usuario newUsuario = this.obter(usuario.getId());
-        newUsuario.setSenha(this.bCryptPasswordEncoder.encode(usuario.getSenha()));
-        this.usuarioRepository.save(newUsuario);
+    public void excluir(final Long id) {
+        final Usuario usuario = this.obter(id);
+        usuario.setAtivo(false);
+        this.usuarioRepository.save(usuario);
+    }
+
+    public void validarSeUsuarioEstaAtivo(final Usuario usuario) {
+        if (!usuario.getAtivo()) {
+            throw new ObjetoNaoEncontradoException("Usuário excluido.");
+        }
+    }
+
+    public boolean isUsuarioAdmin() {
+        final UsuarioSpringSecurity usuario = Optional.ofNullable(this.usuarioAutenticado()).orElseThrow(() -> new AuthorizationException("Acesso negado!"));
+        return usuario.hasRole(PerfilEnum.ADMIN);
+    }
+
+    public UsuarioSpringSecurity usuarioAutenticado() {
+        try {
+            return (UsuarioSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            return null;
+        }
     }
     
 }
