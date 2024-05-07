@@ -1,6 +1,6 @@
 package com.patriciasantos.desafio.models.to;
 
-public class UsuarioTo {
+public class UsuarioTO {
 
     private String username;
     private String senha;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.patriciasantos.desafio.models.Usuario;
 import com.patriciasantos.desafio.models.enums.PerfilEnum;
-import com.patriciasantos.desafio.models.to.UsuarioTo;
+import com.patriciasantos.desafio.models.to.UsuarioTO;
 import com.patriciasantos.desafio.repositories.UsuarioRepository;
 import com.patriciasantos.desafio.security.UsuarioSpringSecurity;
 import com.patriciasantos.desafio.services.exceptions.AuthorizationException;
@@ -40,25 +40,25 @@ public class UsuarioService {
 
 
     @Transactional(rollbackOn = Exception.class)
-    public Usuario criar(final UsuarioTo usuarioTo) {
+    public Usuario criar(final UsuarioTO usuarioTO) {
         if (!this.isUsuarioAdmin()) {
             throw new AuthorizationException("Você não tem permissão para cadastrar um usuário.");
         }
         
         final Usuario usuario = new Usuario.UsuarioBuilder().create()
-        .comUsername(usuarioTo.getUsername())
-        .comSenha(this.bCryptPasswordEncoder.encode(usuarioTo.getSenha()))
-        .comPerfil(usuarioTo.getPerfil())
+        .comUsername(usuarioTO.getUsername())
+        .comSenha(this.bCryptPasswordEncoder.encode(usuarioTO.getSenha()))
+        .comPerfil(usuarioTO.getPerfil())
         .build();
         
         return this.usuarioRepository.save(usuario);
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public void atualizar(final Long id, final UsuarioTo usuarioTo) {
+    public void atualizar(final Long id, final UsuarioTO usuarioTO) {
         final Usuario usuario = this.obter(id);
-        usuario.setUsername(usuarioTo.getUsername());
-        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuarioTo.getSenha()));
+        usuario.setUsername(usuarioTO.getUsername());
+        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuarioTO.getSenha()));
         this.usuarioRepository.save(usuario);
     }
 

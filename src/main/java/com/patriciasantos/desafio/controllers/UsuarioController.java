@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.patriciasantos.desafio.models.Usuario;
-import com.patriciasantos.desafio.models.to.UsuarioTo;
+import com.patriciasantos.desafio.models.to.UsuarioTO;
 import com.patriciasantos.desafio.services.UsuarioService;
 
 @RestController
@@ -30,7 +30,7 @@ public class UsuarioController {
     
 
     @PostMapping
-    public ResponseEntity<Object> criar(@RequestBody UsuarioTo usuarioTo) {
+    public ResponseEntity<Object> criar(@RequestBody UsuarioTO usuarioTo) {
         final Usuario usuario = this.usuarioService.criar(usuarioTo);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -40,7 +40,7 @@ public class UsuarioController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@RequestBody UsuarioTo usuarioTo, @PathVariable Long id) {
+    public ResponseEntity<Void> update(@RequestBody UsuarioTO usuarioTo, @PathVariable Long id) {
         this.usuarioService.atualizar(id, usuarioTo);
         return ResponseEntity.noContent().build();
     }

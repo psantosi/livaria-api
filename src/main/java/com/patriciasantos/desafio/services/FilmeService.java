@@ -1,17 +1,63 @@
 package com.patriciasantos.desafio.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.patriciasantos.desafio.models.Filme;
+import com.patriciasantos.desafio.models.to.FilmeTO;
+import com.patriciasantos.desafio.models.view.FilmeView;
 import com.patriciasantos.desafio.repositories.FilmeRepository;
+import com.patriciasantos.desafio.services.exceptions.AuthorizationException;
+import com.patriciasantos.desafio.services.exceptions.ObjetoNaoEncontradoException;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class FilmeService {
 
     private final FilmeRepository filmeRepository;
+    private final UsuarioService usuarioService;
 
 
-    public FilmeService(final FilmeRepository filmeRepository) {
+    public FilmeService(final FilmeRepository filmeRepository, final UsuarioService usuarioService) {
         this.filmeRepository = filmeRepository;
+        this.usuarioService = usuarioService;
+    }
+
+    public List<FilmeView> listar() {
+        final List<Filme> filmes = this.filmeRepository.findAll();
+        return this.converterParaView(filmes);
+    }
+
+    public FilmeView busca(final Long id) {
+        final Filme filme = this.filmeRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException("Filme não encontrado."));
+        return FilmeView.toView(filme);
+    }
+
+    private List<FilmeView> converterParaView(final List<Filme> filmes) {
+        final List<FilmeView> views = new ArrayList<>();
+        filmes.forEach(filme -> views.add(FilmeView.toView(filme)));
+        return views;
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    public Filme criar(final FilmeTO filmeTO) {
+        if (!this.usuarioService.isUsuarioAdmin()) {
+            throw new AuthorizationException("Você não tem permissão para cadastrar um filme.");
+        }
+
+        final Filme filme = new Filme.FilmeBuilder().create()
+        .comTitulo(filmeTO.getTitulo())
+        .comDiretor(filmeTO.getDiretor())
+        .comGenero(filmeTO.getGenero())
+        .comDescricao(filmeTO.getDescricao())
+        .build();
+
+                
+        return this.filmeRepository.save(filme);
     }
 
 }

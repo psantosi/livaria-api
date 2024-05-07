@@ -48,7 +48,7 @@ public class Filme {
     private String descricao;
 
     @OneToMany(mappedBy = "filme")
-    private List<Voto> tasks = new ArrayList<Voto>();
+    private List<Voto> votos = new ArrayList<Voto>();
     
 
     public Filme() {
@@ -103,5 +103,51 @@ public class Filme {
     public void setDescricao(final String descricao) {
         this.descricao = descricao;
     }  
+
+
+    public List<Voto> getVotos() {
+        return votos;
+    }
+
+
+    public void setVotos(List<Voto> votos) {
+        this.votos = votos;
+    }
+
+
+    public static class FilmeBuilder {
+
+        private Filme filme;
+
+        public FilmeBuilder create() {
+            filme = new Filme();
+            return this;
+        }
+
+        public FilmeBuilder comTitulo(final String titulo) {
+            filme.setTitulo(titulo);
+            return this;
+        }
+
+        public FilmeBuilder comDiretor(final String diretor) {
+            filme.setDiretor(diretor);
+            return this;
+        }
+
+        public FilmeBuilder comGenero(final String genero) {
+            filme.setGenero(genero);
+            return this;
+        }
+
+        public FilmeBuilder comDescricao(final String descricao) {
+            filme.setDescricao(descricao);
+            return this;
+        }
+
+        public Filme build() {
+            return filme;
+        }
+
+    }
 
 }
