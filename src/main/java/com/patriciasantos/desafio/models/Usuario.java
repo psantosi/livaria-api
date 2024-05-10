@@ -30,15 +30,14 @@ public class Usuario {
     private String username;
 
     @JsonProperty( access = Access.WRITE_ONLY)
-    @Column(name = "senha", length = 60, nullable = false)
+    @Column(name = "password", length = 60, nullable = false)
     @NonNull
     @NotEmpty
     @Size(min = 2, max = 60)
-    private String senha;
+    private String password;
 
     @Column(name = "ativo", nullable = false)
     @NonNull
-    @NotEmpty
     private Boolean ativo = true;
 
     @JsonProperty( access = Access.WRITE_ONLY)
@@ -50,10 +49,10 @@ public class Usuario {
 
     }
 
-    public Usuario(final Long id, final String username, final String senha) {
+    public Usuario(final Long id, final String username, final String password) {
         this.id = id;
         this.username = username;
-        this.senha = senha;
+        this.password = password;
     } 
 
     public Long getId() {
@@ -72,12 +71,12 @@ public class Usuario {
         this.username = username;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(final String senha) {
-        this.senha = senha;
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
     public Boolean getAtivo() {
@@ -100,7 +99,7 @@ public class Usuario {
         return PerfilEnum.toEnum(this.perfil);
     }
 
-    public void setPerfil(final PerfilEnum perfilEnum) {
+    public void setPerfilEnum(final PerfilEnum perfilEnum) {
         this.perfil = perfilEnum.getCodigo();
     }
 
@@ -118,8 +117,8 @@ public class Usuario {
             return this;
         }
 
-        public UsuarioBuilder comSenha(final String senha) {
-            usuario.setSenha(senha);
+        public UsuarioBuilder comPassword(final String password) {
+            usuario.setPassword(password);
             return this;
         }
 

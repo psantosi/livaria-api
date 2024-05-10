@@ -28,21 +28,23 @@ public class FilmeService {
 
     public List<FilmeView> listar() {
         final List<Filme> filmes = this.filmeRepository.findAll();
-        return this.converterParaView(filmes);
+        final Long usuarioId = this.usuarioService.obterUsuarioIdLogado();
+        return this.converterParaView(filmes, usuarioId);
     }
 
     public FilmeView buscarView(final Long id) {
         final Filme filme = this.filmeRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException("Filme não encontrado."));
-        return FilmeView.toView(filme);
+        final Long usuarioId = this.usuarioService.obterUsuarioIdLogado();
+        return FilmeView.toView(filme, usuarioId);
     }
 
     public Filme buscar(final Long id) {
         return this.filmeRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException("Filme não encontrado."));
     }
 
-    private List<FilmeView> converterParaView(final List<Filme> filmes) {
+    private List<FilmeView> converterParaView(final List<Filme> filmes, final Long usuarioId) {
         final List<FilmeView> views = new ArrayList<>();
-        filmes.forEach(filme -> views.add(FilmeView.toView(filme)));
+        filmes.forEach(filme -> views.add(FilmeView.toView(filme, usuarioId)));
         return views;
     }
 

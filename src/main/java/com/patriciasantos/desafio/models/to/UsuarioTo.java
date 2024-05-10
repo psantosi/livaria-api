@@ -3,7 +3,7 @@ package com.patriciasantos.desafio.models.to;
 public class UsuarioTO {
 
     private String username;
-    private String senha;
+    private String password;
     private Integer perfil;
 
 
@@ -11,23 +11,23 @@ public class UsuarioTO {
         return this.username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public String getSenha() {
-        return this.senha;
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
     public Integer getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Integer perfil) {
+    public void setPerfil(final Integer perfil) {
         this.perfil = perfil;
     }
 

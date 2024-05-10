@@ -43,16 +43,17 @@ public class UsuarioService {
         return this.obter(usuarioSpringSecurity.getId());
     }
 
+    public Long obterUsuarioIdLogado() {
+        final UsuarioSpringSecurity usuarioSpringSecurity = this.usuarioAutenticado();
+        return usuarioSpringSecurity.getId();
+    }
+
 
     @Transactional(rollbackOn = Exception.class)
-    public Usuario criar(final UsuarioTO usuarioTO) {
-        if (!this.isUsuarioAdmin()) {
-            throw new AuthorizationException("Você não tem permissão para cadastrar um usuário.");
-        }
-        
+    public Usuario criar(final UsuarioTO usuarioTO) {        
         final Usuario usuario = new Usuario.UsuarioBuilder().create()
         .comUsername(usuarioTO.getUsername())
-        .comSenha(this.bCryptPasswordEncoder.encode(usuarioTO.getSenha()))
+        .comPassword(this.bCryptPasswordEncoder.encode(usuarioTO.getPassword()))
         .comPerfil(usuarioTO.getPerfil())
         .build();
         
@@ -63,7 +64,7 @@ public class UsuarioService {
     public void atualizar(final Long id, final UsuarioTO usuarioTO) {
         final Usuario usuario = this.obter(id);
         usuario.setUsername(usuarioTO.getUsername());
-        usuario.setSenha(this.bCryptPasswordEncoder.encode(usuarioTO.getSenha()));
+        usuario.setPassword(this.bCryptPasswordEncoder.encode(usuarioTO.getPassword()));
         this.usuarioRepository.save(usuario);
     }
 

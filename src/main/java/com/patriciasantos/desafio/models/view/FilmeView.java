@@ -19,13 +19,13 @@ public class FilmeView implements Serializable {
     public FilmeView() {
     }
 
-    public FilmeView(final Filme filme) {
+    public FilmeView(final Filme filme, Long usuarioId) {
         this.id = filme.getId();
         this.titulo = filme.getTitulo();
         this.diretor = filme.getDiretor();
         this.genero = filme.getGenero();
         this.descricao = filme.getDescricao();
-        this.votos = filme.getVotos().stream().map(voto -> new VotoTO(voto)).toList();
+        this.votos = filme.getVotos().stream().map(voto -> new VotoTO(voto, usuarioId)).toList();
     }
 
     
@@ -87,8 +87,8 @@ public class FilmeView implements Serializable {
         return somaDosVotos / quantidadeVotos;
     }
 
-    public static FilmeView toView(final Filme filme) {
-        return new FilmeView(filme);
+    public static FilmeView toView(final Filme filme, final Long usuarioId) {
+        return new FilmeView(filme, usuarioId);
     }
 
 }

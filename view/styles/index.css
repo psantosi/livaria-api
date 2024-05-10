@@ -1,0 +1,38 @@
+
+.navbar-brand, .navbar-brand:hover  {
+    color: #f8f9fa;
+}
+ 
+.navbar-toggler {
+    border-color: #f8f9fa;
+    background-color: #f8f9fa;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.nav-link.active {
+    color: rgba(255, 255, 255, 255) !important;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.estrelas input[type=radio] {
+    display: none;
+}
+
+.estrelas label i.fa::before {
+    content:"\f005";
+    color: #FC0;
+}
+
+.estrelas input[type=radio]:checked ~ label i.fa::before {
+    color: #ccc;
+}
+
+td, th {
+    text-align: center;
+}

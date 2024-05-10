@@ -114,6 +114,15 @@ public class Filme {
         this.votos = votos;
     }
 
+    public void addVotos(Voto votos) {
+        if (this.votos.isEmpty()) {
+            this.votos = new ArrayList<>();
+        }
+
+        this.votos.add(votos);
+    }
+
+
 
     public static class FilmeBuilder {
 

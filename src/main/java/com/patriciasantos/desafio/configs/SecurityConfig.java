@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +20,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.patriciasantos.desafio.security.JWTAuthenticationFilter;
 import com.patriciasantos.desafio.security.JWTAuthorizationFilter;
 import com.patriciasantos.desafio.security.JWTUtil;
-import com.patriciasantos.desafio.services.UsuarioDetailsServiceImpl;
 
 import java.util.Arrays;
 
@@ -36,7 +36,7 @@ public class SecurityConfig {
         "/"
     };
     private static final String[] PUBLIC_MATCHERS_POST = {
-        "/user",
+        "/usuario",
         "/login"
     };
 
@@ -59,7 +59,8 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
             .requestMatchers(PUBLIC_MATCHERS).permitAll()
             .anyRequest().authenticated().and()
-            .authenticationManager(authenticationManager);
+            .authenticationManager(authenticationManager)
+;
 
         http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
         http.addFilter(new JWTAuthorizationFilter(this.authenticationManager,  this.jwtUtil, this.userDetailsService));

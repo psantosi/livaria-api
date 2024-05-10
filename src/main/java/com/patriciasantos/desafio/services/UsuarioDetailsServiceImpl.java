@@ -25,7 +25,7 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final Usuario usuario = Optional.ofNullable(this.usuarioRepository.findByUsername(username)).orElseThrow(() -> new UsernameNotFoundException(" Usuário não encontrado"));
-        return new UsuarioSpringSecurity(usuario.getId(), usuario.getUsername(), usuario.getSenha(), usuario.getPerfilEnum());    
+        return new UsuarioSpringSecurity(usuario.getId(), usuario.getUsername(), usuario.getPassword(), usuario.getPerfilEnum());    
     }
     
 }

@@ -8,15 +8,17 @@ public class VotoTO implements Serializable {
 
     private Integer nota;
     private Long idFilme;
+    private Boolean isVotoUsuario;
 
 
     public VotoTO() {
     }
 
 
-    public VotoTO(final Voto voto) {
+    public VotoTO(final Voto voto, final Long usuarioId) {
         this.nota = voto.getNota();
         this.idFilme = voto.getFilme().getId();
+        this.isVotoUsuario = voto.getUsuarioId().equals(usuarioId);
     }
 
 
@@ -36,7 +38,17 @@ public class VotoTO implements Serializable {
 
     public void setIdFilme(Long idFilme) {
         this.idFilme = idFilme;
+    }
+
+
+    public Boolean getIsVotoUsuario() {
+        return isVotoUsuario;
+    }
+
+
+    public void setIsVotoUsuario(Boolean isVotoUsuario) {
+        this.isVotoUsuario = isVotoUsuario;
     } 
 
-
+    
 }
