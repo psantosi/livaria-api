@@ -1,4 +1,6 @@
 
+### API Restfull com Java e Springboot
+
 Instruções de utilização
 Essas instruções vão te levar a uma cópia do projeto rodando em sua máquina local.
 
@@ -35,20 +37,34 @@ Passo 3.2: Abrir o arquivo index.html diretamente:
 
 Rotas disponíves na API:
 
-Login
+***Login***
+
 http://localhost:8080/login - Metodo POST - body: body: {username: String, passoword: String} - Logar;
 
-Usuario
+
+
+***Usuario***
+
 http://localhost:8080/usuario - Metodo POST - body: {username: String, passoword: String, perfil: int(1 - ADMIN, 2 - USUARIO)} - Criar usuário;
+
 http://localhost:8080/usuario/{id} - Metodo PUT - body: {username: String, passoword: String} - Atualizar usuário;
+
 http://localhost:8080/usuario/{id} - Metodo DELETE - Deletar usuário;
 
-Filmes
+
+
+***Filmes***
+
 http://localhost:8080/filme - Metodo GET (Autenticação token JWT) - Busca todos os filmes;
+
 http://localhost:8080/filme/{id} - Metodo GET (Autenticação token JWT) - Busca um filme pelo id;
+
 http://localhost:8080/filme - Metodo POST (Autenticação token JWT) - body: {titulo: String, diretor: String, genero: String, descricao: String} - Cadastra um filme;
 
-Voto
+
+
+***Voto***
+
 http://localhost:8080/voto - Metodo POST (Autenticação token JWT) - body: {nota: int, idFilme: long} - Votar;
 
 
